@@ -1,13 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
 
 import Functions.Imports as imp
-
-
-# In[ ]:
 
 
 def drop_and_rename_coloumns(df_season):
@@ -25,12 +17,9 @@ def drop_and_rename_coloumns(df_season):
     return all_seasons
 
 
-# In[ ]:
-
-
 def save_zip_file(name_zip_file, teams_list_or_df, list_or_df = "LIST", save_nba_teams = "Y"):
   
-    with imp.ZipFile(f"{name_zip_file}.zip", "w") as zf:
+    with imp.ZipFile(f"files/{name_zip_file}.zip", "w") as zf:
         
         if save_nba_teams == "Y":
             nba_teams = imp.teams.get_teams()
@@ -55,13 +44,9 @@ def save_zip_file(name_zip_file, teams_list_or_df, list_or_df = "LIST", save_nba
             with zf.open("all_teams.csv", "w") as buffer:
                     teams_list_or_df.to_csv(buffer,index=False)
 
-
-# In[ ]:
-
-
 def open_zip_file(name_zip_file):
     
-    with imp.ZipFile(f'{name_zip_file}.zip', 'r') as zipObj:
+    with imp.ZipFile(f'files/{name_zip_file}.zip', 'r') as zipObj:
         name_files = zipObj.namelist()
         
     dfs_zip_file = from_zip_file(name_zip_file)
@@ -72,13 +57,9 @@ def open_zip_file(name_zip_file):
         
     return teams
 
-
-# In[ ]:
-
-
 def from_zip_file(name_zip_file):
     
-    zip_file = imp.ZipFile(f"{name_zip_file}.zip")
+    zip_file = imp.ZipFile(f"files/{name_zip_file}.zip")
 
     dfs_zip_file = {text_file.filename:
                     imp.pd.read_csv(zip_file.open(text_file.filename))
@@ -86,9 +67,6 @@ def from_zip_file(name_zip_file):
                     if text_file.filename.endswith(".csv")}
     
     return(dfs_zip_file)
-
-
-# In[ ]:
 
 
 def open_and_join_files(file_name, list_join_teams):
@@ -99,13 +77,9 @@ def open_and_join_files(file_name, list_join_teams):
     
     return list_join_teams
 
-
-# In[ ]:
-
-
 def dfs_teams_from_zip_file(name_zip_file):
     
-    with imp.ZipFile(f'{name_zip_file}.zip', 'r') as zipObj:
+    with imp.ZipFile(f'files/{name_zip_file}.zip', 'r') as zipObj:
         name_files = zipObj.namelist()
         
     dfs_zip_file = from_zip_file(name_zip_file)
@@ -117,9 +91,6 @@ def dfs_teams_from_zip_file(name_zip_file):
     return teams
 
 
-# In[ ]:
-
-
 def modify_columns(list_dfs,opponent = "N"):
    
     if opponent == "N":
@@ -127,8 +98,7 @@ def modify_columns(list_dfs,opponent = "N"):
         month = {0:'All',1:"October",2:"November",3:"December",4:"January",5:"February",6:"March",7:"April",8:"May",9:"June",10:"July",11:"August"}
         
         for df in list_dfs:
-#             df.rename(columns={"OPPONENT": "SEASON"},inplace = True)
-            
+           
             df.fillna("All",inplace=True)
             df.replace({"MONTH": month},inplace=True)
             df["DATA"] = df["MONTH"].astype(str) + "/" + df["SEASON"].str.slice(0,4)
