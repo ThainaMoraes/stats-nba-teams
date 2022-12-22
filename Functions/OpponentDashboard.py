@@ -11,19 +11,20 @@ def team_opponent_dashboard(teams_list,id_teams,season_type):
         id_team = nba_teams[index]['id']
         
         if id_team not in id_teams:
-            teams_list.append(team_stats_opponent(id_team,season_type=season_type))
+            seasons = imp.teamdashboardbyyearoveryear.TeamDashboardByYearOverYear(team_id= id_team).get_data_frames()[1]['GROUP_VALUE']
+            teams_list.append(team_stats_opponent(id_team,season_type=season_type,seasons))
             id_teams.append(id_team)
             print(id_team)
             
     return id_teams, teams_list
 
 
-def team_stats_opponent(id_team,season_type):
+def team_stats_opponent(id_team,season_type,seasons):
     local_game = ["Home","Road",'']
     teams_list =[]
     
     for local in local_game:
-        team = team_dashboard_by_opponent(id_team,season_type,local)
+        team = team_dashboard_by_opponent(id_team,season_type,seasons,local)
         teams_list.append(team)
         
         imp.time.sleep(1)
@@ -33,11 +34,9 @@ def team_stats_opponent(id_team,season_type):
     return(df)
 
 
-def team_dashboard_by_opponent(id_team,season_type,local_game):
+def team_dashboard_by_opponent(id_team,season_type,seasons,local_game):
     
     teams_list = []
-
-    seasons = imp.teamdashboardbyyearoveryear.TeamDashboardByYearOverYear(team_id= id_team).get_data_frames()[1]['GROUP_VALUE']
     
     for season in seasons:
         df_season = imp.teamdashboardbyopponent.TeamDashboardByOpponent(team_id= id_team,
