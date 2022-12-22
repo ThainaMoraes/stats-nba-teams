@@ -1,14 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import Functions.Imports as imp
 import Functions.General as general
-
-
-# In[4]:
 
 
 def team_dashboard(teams_list,id_teams,season_type):
@@ -25,9 +16,6 @@ def team_dashboard(teams_list,id_teams,season_type):
     return id_teams, teams_list
 
 
-# In[ ]:
-
-
 def team_stats(id_team,season_type):
     local_game = ["Home","Road",'']
     teams_list =[]
@@ -41,9 +29,6 @@ def team_stats(id_team,season_type):
     df = imp.pd.concat(teams_list)
     
     return(df)
-
-
-# In[ ]:
 
 
 def team_dashboard_year_by_year(id_team,season_type,local_game):
